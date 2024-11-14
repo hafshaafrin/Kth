@@ -41,7 +41,7 @@ class SynonymUser
         SynonymHandler.removeSynonym(synonymData, "merciful",
             "gracious");
         SynonymHandler.removeSynonym(synonymData, "powerful",
-            "briliant");
+           "briliant");
         SynonymHandler.removeSynonym(synonymData, "beautiful",
             "pleasing");
         println(synonymData);
