@@ -1,4 +1,4 @@
-// SynonymHandler
+/*SynonymHandler*/
 
 /****************************************************************
 
@@ -118,6 +118,8 @@ class SynonymHandler
     // the synonym line corresponding to a given word.
     // If the given word is not present, an exception of
     // the type IllegalArgumentException is thrown.
+
+// min kod!!*****************************************************************
 	public static String[] removeSynonymLine (String[] synonymData,
 	    String word) throws IllegalArgumentException
 	{
@@ -126,6 +128,8 @@ class SynonymHandler
         String[] synData = new String[synonymData.length - 1];
         for(int i = 0, j = 0; i < synonymData.length ; i++){
             if( i != pWord){
+                // om i är inte ordet som ska raderas så tar den ordet och lägget till i synonymData
+                // sen går till nästa position
                 synData[j++] = synonymData[i];
             }
         }
@@ -134,11 +138,11 @@ class SynonymHandler
     }
 
     // getSynonyms returns synonyms in a given synonym line.
-	private static String[] getSynonyms (String synonymLine)
+	private static String[] getSynonyms (String synonymLine)// så att vi kan jobba med bara synonymer
 	{
-        int position = synonymLine.indexOf('|');
-        String newSynonym = synonymLine.substring(position + 1).trim();
-        return newSynonym.split(","); 
+        int position = synonymLine.indexOf('|');// vilken plats är den char
+        String newSynonym = synonymLine.substring(position + 1).trim();// tar allt från efter streck synonym
+        return newSynonym.split(","); //split varje gång den ser en comma
 	}
 
     // addSynonym accepts synonym data, and adds a given
@@ -148,19 +152,21 @@ class SynonymHandler
 	public static void addSynonym (String[] synonymData,
 	    String word, String synonym) throws IllegalArgumentException
 	{
-        int position = synonymLineIndex(synonymData, word);
-        String[] synData = new String [synonymData.length + 1];
-        if (position == -1){
+        int position = synonymLineIndex(synonymData, word); // hitta word; = position
+        String[] synData = new String [synonymData.length + 1];// en element större än synonymData
+        if (position == -1){ // -1 för att det kan inte bli -1 och då är den inte med i listan
             throw new IllegalArgumentException("Word" + word + "'not found");
-        }
+        }/* Jag kanske måste inte göra det???***  */
 
         for (int i = 0; i < synonymData.length; i++){
-            synData[i] = synonymData[i];
+            synData[i] = synonymData[i]; // kopierar
             if(i == position) {
                 synonymData[position] += "," + synonym;
             }
         }
 	}
+// ***************************************************LABB#2************
+
 
     // removeSynonym accepts synonym data, and removes a given
     // synonym for a given word.
@@ -168,57 +174,80 @@ class SynonymHandler
     // exception of the type IllegalArgumentException is thrown.
     // If there is only one synonym for the given word, an
     // exception of the type IllegalStateException is thrown.
-/* 	public static void removeSynonym (String[] synonymData,
-	    String word, String synonym)
-	    throws IllegalArgumentException, IllegalStateException
-	{
-        String[] synData = new String[synonymData.length - 1];
-        int index = synonymLineIndex(synonymData, word);
-        String [] synonyms = getSynonyms(synonymData[index]);
-        int position = -1;
-        if (index == -1)
-        {
-            throw new IllegalArgumentException("word" + word + "not found");
-        }
-        if (synonyms.length == 1){
-            throw new IllegalArgumentException("cannot remove");
+    public static void removeSynonym (String[] synonymData,
+    String word, String synonym)
+    throws IllegalArgumentException, IllegalStateException{
+    
+    int index = synonymLineIndex(synonymData, word); 
+    String synLine = getSynonymLine(synonymData, word); 
+    String [] synonyms = getSynonyms(synLine);
+    String[] synData = new String [synonyms.length-1];
 
-        }
-        for (int i = 0; i < synonymData.length; i++){
-            if(synonyms[i].equalsIgnoreCase(synonym))
-            {
-                position = i;
-                break;
-                
-            }
-        }
-
-        for(int i = 1; i < synonymData.length; i++)
-        if (i <= position){
-            synData[i] = synonymData[i];
-        }
-        else {
-            synData[i - 1] = synonymData[i];
-        }
-
+    if (index == -1) {
+        throw new IllegalArgumentException("ordet finns inte i  synonymData.");
     }
-*/
-public static void removeSynonym(String[] synonymData, String word, String synonym)
+     if (synonymData.length == 1) {
+        throw new IllegalStateException("kan inte ta bort den enda synonymen ");
+    }
+
+    int pos= -1;
+    int i= 0;
+
+   while(i<synonyms.length && pos==-1){
+        if (synonyms[i].equalsIgnoreCase(synonym)) {
+            pos = i;
+            break;
+        }
+        i++;
+        
+     
+    }
+
+       if (i == -1) {
+        throw new IllegalArgumentException("synonymen hittas inte");
+        }
+
+    
+    String baraOrd = synLine.substring (0, synLine.indexOf("|")).trim();
+
+   int a = 0;
+    for (int m = 0; m < synonyms.length; m++) {
+        if (m==pos) {
+             continue;
+         }
+    synData[a++] = synonyms[m];
+      
+    }
+
+  String nyaLine = baraOrd + "| ";
+    for (int j = 0; j < synData.length; j++) {
+    nyaLine += synData[j];
+    if (j < synData.length - 1) {
+        nyaLine += ", ";
+    }
+}
+
+synLine = nyaLine.trim();
+synonymData[index] = synLine;
+}
+   
+
+/*public static void removeSynonym(String[] synonymData, String word, String synonym)
         throws IllegalArgumentException, IllegalStateException {
     
-    // Step 1: Find the index of the synonym line for the given word
+    Step 1: Find the index of the synonym line for the given word
     int index = synonymLineIndex(synonymData, word);
     if (index == -1) {
         throw new IllegalArgumentException("Word '" + word + "' not found");
     }
 
-    // Step 2: Get synonyms for the word and ensure at least one will remain
+    Step 2: Get synonyms for the word and ensure at least one will remain
     String[] synonyms = getSynonyms(synonymData[index]);
     if (synonyms.length == 1 && synonyms[0].trim().equalsIgnoreCase(synonym.trim())) {
         throw new IllegalStateException("Cannot remove the only synonym for word: " + word);
     }
 
-    // Step 3: Remove the synonym if it exists
+    Step 3: Remove the synonym if it exists
     int position = -1;
     for (int i = 0; i < synonyms.length; i++) {
         if (synonyms[i].trim().equalsIgnoreCase(synonym.trim())) {
@@ -230,7 +259,7 @@ public static void removeSynonym(String[] synonymData, String word, String synon
         throw new IllegalArgumentException("Synonym '" + synonym + "' not found for word '" + word + "'");
     }
 
-    // Step 4: Create a new array for the updated synonyms
+    Step 4: Create a new array for the updated synonyms
     String[] synData = new String[synonyms.length - 1];
     for (int i = 0, j = 0; i < synonyms.length; i++) {
         if (i != position) {
@@ -238,7 +267,7 @@ public static void removeSynonym(String[] synonymData, String word, String synon
         }
     }
 
-    // Step 5: Update the synonym line and `synonymData`
+    Step 5: Update the synonym line and `synonymData`
     StringBuilder updatedLine = new StringBuilder(word + " |");
     for (String syn : synData) {
         updatedLine.append(" ").append(syn).append(",");
@@ -246,7 +275,7 @@ public static void removeSynonym(String[] synonymData, String word, String synon
     synonymData[index] = updatedLine.toString().replaceAll(",$", "");  // Remove trailing comma
 }
 
-
+*/
     // sortIgnoreCase sorts an array of strings, using
     // the selection sort algorithm
     private static void sortIgnoreCase (String[] strings)
