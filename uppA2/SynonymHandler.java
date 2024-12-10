@@ -179,9 +179,9 @@ class SynonymHandler
     throws IllegalArgumentException, IllegalStateException{
     
     int index = synonymLineIndex(synonymData, word); 
-    String synLine = getSynonymLine(synonymData, word); 
-    String [] synonyms = getSynonyms(synLine);
-    String[] synData = new String [synonyms.length-1];
+    String synLine = getSynonymLine(synonymData, word); //hela syn o orden
+    String [] synonyms = getSynonyms(synLine);// alla synonymer till ett ord
+    String[] synData = new String [synonyms.length-1];// store after removing
 
     if (index == -1) {
         throw new IllegalArgumentException("ordet finns inte i  synonymData.");
@@ -195,7 +195,7 @@ class SynonymHandler
 
    while(i<synonyms.length && pos==-1){
         if (synonyms[i].equalsIgnoreCase(synonym)) {
-            pos = i;
+            pos = i; // hitta platsen där synonymen ska bort
             break;
         }
         i++;
@@ -205,7 +205,7 @@ class SynonymHandler
 
        if (i == -1) {
         throw new IllegalArgumentException("synonymen hittas inte");
-        }
+        }// om synonymen finns ej
 
     
     String baraOrd = synLine.substring (0, synLine.indexOf("|")).trim();
@@ -213,22 +213,22 @@ class SynonymHandler
    int a = 0;
     for (int m = 0; m < synonyms.length; m++) {
         if (m==pos) {
-             continue;
+             continue;// skippar den som ska bort
          }
     synData[a++] = synonyms[m];
       
     }
 
-  String nyaLine = baraOrd + "| ";
+  String nyaLine = baraOrd + "| ";// skriver bara ord
     for (int j = 0; j < synData.length; j++) {
     nyaLine += synData[j];
     if (j < synData.length - 1) {
-        nyaLine += ", ";
+        nyaLine += ", "; // lägger till synonymer efter ord
     }
 }
 
 synLine = nyaLine.trim();
-synonymData[index] = synLine;
+synonymData[index] = synLine;// uppdaterar synonymdata
 }
    
 
