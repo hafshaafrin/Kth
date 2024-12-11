@@ -285,7 +285,7 @@ synonymData[index] = synLine;// uppdaterar synonymdata
             int j = i - 1;
     
             while (j >= 0 && aktuell.compareToIgnoreCase(strings[j]) < 0) {
-                strings[j+1] = strings[j];
+                strings[j+1] = strings[j]; // skriftar
                 j--;
             }
     
@@ -298,10 +298,10 @@ synonymData[index] = synLine;// uppdaterar synonymdata
     private static String sortSynonymLine (String synonymLine)
     {
         String[] synonyms = getSynonyms(synonymLine); 
-        sortIgnoreCase(synonyms);
+        sortIgnoreCase(synonyms); // alphabetisk
 // new codes:
-        String formattedSynonyms = String.join(", ", synonyms);
-        return (synonymLine.substring(0, synonymLine.indexOf("|")+1)+" " + formattedSynonyms);	
+        String formattedSynonyms = String.join(", ", synonyms);// komma mellan synoymer
+        return (synonymLine.substring(0, synonymLine.indexOf("|")+1)+" " + formattedSynonyms);
        
        // return (synonymLine.substring(0, synonymLine.indexOf("|")+1)+" " + synonyms);	
 	}
@@ -311,7 +311,7 @@ synonymData[index] = synLine;// uppdaterar synonymdata
 	public static void sortSynonymData (String[] synonymData)
 	{
         for (int i = 0; i < synonymData.length; i++) {
-            synonymData[i] = sortSynonymLine(synonymData[i]);
+            synonymData[i] = sortSynonymLine(synonymData[i]); // använder sortsynonym line för att formatera
         }
         sortIgnoreCase(synonymData);
     
