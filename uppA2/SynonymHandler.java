@@ -297,14 +297,20 @@ synonymData[index] = synLine;// uppdaterar synonymdata
     // the synonyms in this line
     private static String sortSynonymLine (String synonymLine)
     {
-        String[] synonyms = getSynonyms(synonymLine); 
-        sortIgnoreCase(synonyms); // alphabetisk
-// new codes:
-        String formattedSynonyms = String.join(", ", synonyms);// komma mellan synoymer
-        return (synonymLine.substring(0, synonymLine.indexOf("|")+1)+" " + formattedSynonyms);
-       
-       // return (synonymLine.substring(0, synonymLine.indexOf("|")+1)+" " + synonyms);	
-	}
+        String [] synonyms = getSynonyms(synonymLine);
+        sortIgnoreCase(synonyms);
+
+        String baraOrd = synonymLine.substring (0, synonymLine.indexOf("|")).trim();
+        String nyaLine = baraOrd + " | ";
+        for (int j = 0; j < synonyms.length; j++) {
+            nyaLine += synonyms[j];
+            if (j < synonyms.length - 1) {
+                nyaLine += ", ";
+            }
+        }
+
+        return nyaLine;
+    }
 
     // sortSynonymData accepts synonym data, and sorts its
     // synonym lines and the synonyms in these lines
