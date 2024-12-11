@@ -61,17 +61,16 @@ public class LinkedNumberSequence implements NumberSequence
 
     // add code here
 
-
 	public int length()
 	{
 		int length = 0;
 		if (first==null){
-			return (length);
+			return (length); // om första tomt då length =0
 		}
 		Node nyaNode = first;
 		while (nyaNode != null){
-			length++;
-			nyaNode= nyaNode.next;
+			length++; // om första position inte = null då öka length till 1
+			nyaNode= nyaNode.next; //nästa node blir nya node
 		}
 		return (length);
 	}
@@ -83,7 +82,7 @@ public class LinkedNumberSequence implements NumberSequence
 			if (curr.number > max){
 				max=curr.number;
 			}
-			curr=curr.next;
+			curr=curr.next; // kollar nästa current
 		}
 		return (max);
 	}
@@ -110,21 +109,21 @@ public class LinkedNumberSequence implements NumberSequence
 		double nummer = 0;
 		while (n != null){
 			if (pos == position){
-				nummer=n.number;
+				nummer=n.number; // om pos är samma som position då är det number. 
 			}
-			pos ++;
-			n = n.next;
+			pos ++;// annars öka pos med 1
+			n = n.next; // och kolla för nästa plats
 		}
 		return (nummer);
 	}
 
 	public int positionOf (double number){
 		Node n = first;
-		int count = 0;// aktuella
-		int pos = -1;
+		int count = 0;// just nu
+		int pos = -1; // inget
 		while (n != null){
-			if (n.number == number){
-				pos= count;
+			if (n.number == number){ // om number i n är som input number så är 
+				pos= count; //dens position positionen vi letar efter
 				break;
 			}
 			count ++;
@@ -196,7 +195,7 @@ public class LinkedNumberSequence implements NumberSequence
 		}
 		Node node = new Node (number);
 		if (position == 0){
-			node.next = first; //om fördta noden ska inser flyttar vi first
+			node.next = first; //om första noden ska inser flyttar vi first
 			first = node;
 		}
 		else {
@@ -228,7 +227,7 @@ public class LinkedNumberSequence implements NumberSequence
 		while (n != null)
 		{
 			if (i == position-1){
-				n. next = n.next.next;
+				n. next = n.next.next; // skippar positionen. 
 			}
 			n=n.next;
 			i++;
@@ -241,9 +240,9 @@ public class LinkedNumberSequence implements NumberSequence
 		int length=length();
 		double[] array = new double[length];
 		for (int i = 0; i < length; i++) {
-			array[i]= n.number;
+			array[i]= n.number; // lägger nummer i current node till i platsen i array
 			n = n.next;
 		}
-		return (array);
+		return (array); // producerar double array
 	}
 }
